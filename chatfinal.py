@@ -39,6 +39,18 @@ class CinepolisChatbot(tk.Tk):
         self.geometry("600x600")
         self.configure(bg="#000000")
 
+        # Cargar dulcería desde JSON
+        try:
+            with open("dulceria.json", "r", encoding="utf-8") as f:
+                self.dulceria_data = json.load(f)
+        except Exception as e:
+            self.dulceria_data = {"dulceria": {}}
+            print(f"No se pudo cargar dulceria.json: {e}")
+
+        # Carrito de dulcería
+        self.carrito_dulceria = []
+        self.estado_dulceria = False
+
         # Conexión a BD
         self.conexion = mysqlconn.connect(
             host=HOST,
@@ -108,7 +120,7 @@ class CinepolisChatbot(tk.Tk):
         self.chat_text.see(tk.END)
 
     def mostrar_menu(self):
-        self.escribir_bot("Los servicios con los que te puedo ayudar son:\n\tCartelera 🎬\n\tDulcería 🍿\n\tBoletos 🎟\n\tPromociones 💳\n\tConsulta de boletos 🎟\n\tSalir 🚪")
+        self.escribir_bot("Los servicios con los que te puedo ayudar son:\n\tCartelera 🎬\n\tDulcería 🍿\n\tBoletos 💵\n\tPromociones 💳\n\tConsulta de boletos 🎟\n\tSalir 🚪\n ")
 
     # --- Procesar entrada ---
     def enviar(self, event=None):
@@ -121,6 +133,15 @@ class CinepolisChatbot(tk.Tk):
 
     # --- Responder ---
     def responder(self, mensaje):
+        # Si está en modo dulcería (selección de productos)
+        if self.estado_dulceria:
+            if mensaje.lower() in ["terminar", "haz la cuenta"]:
+                self.finalizar_dulceria()
+                return
+            else:
+                self.seleccionar_producto_dulceria(mensaje)
+                return
+
         if self.estado == "menu_principal":
             if re.findall(cartelera_RE, mensaje):
                 self.mostrar_cartelera() ## Correcto
@@ -175,8 +196,64 @@ class CinepolisChatbot(tk.Tk):
         self.mostrar_menu()
 
     def mostrar_dulceria(self):
-        # Ejemplo de dulcería
-        self.escribir_bot("🍿 Dulcería disponible: Palomitas, Chocolates, Galletas, Refrescos.\n")
+        if not self.dulceria_data["dulceria"]:
+            self.escribir_bot("No hay productos de dulcería disponibles en este momento.")
+            self.mostrar_menu()
+            return
+        self.escribir_bot("🍿 Menú de la Dulcería Cinépolis:")
+        for categoria, items in self.dulceria_data["dulceria"].items():
+            self.escribir_bot(f"\n📌 {categoria}:")
+            for producto in items:
+                nombre = producto["nombre"]
+                pid = producto["id"]
+                if "sabores" in producto:
+                    sabores = ", ".join(producto["sabores"])
+                    self.escribir_bot(f" ({pid}) {nombre} ({sabores}) ${producto['precio']}")
+                elif "tamaños" in producto:
+                    precios = ", ".join([f"{t}: ${p}" for t, p in producto["precio"].items()])
+                    self.escribir_bot(f" ({pid}) {nombre} [{precios}]")
+                else:
+                    self.escribir_bot(f" ({pid}) {nombre}: ${producto['precio']}")
+        self.escribir_bot("\n👉 Escribe el ID del producto que deseas agregar al carrito.\nCuando termines, escribe 'terminar' o 'haz la cuenta'.")
+        self.estado_dulceria = True
+
+    def seleccionar_producto_dulceria(self, mensaje):
+        try:
+            pid = int(mensaje)
+        except:
+            self.escribir_bot("⚠️ Ingresa un ID válido o 'terminar' para finalizar.")
+            return
+
+        # Buscar producto en JSON
+        for categoria, items in self.dulceria_data["dulceria"].items():
+            for producto in items:
+                if producto["id"] == pid:
+                    self.carrito_dulceria.append(producto)
+                    self.escribir_bot(f"✅ {producto['nombre']} agregado al carrito.")
+                    return
+
+        self.escribir_bot("⚠️ Producto no encontrado. Intenta con otro ID.")
+
+    def finalizar_dulceria(self):
+        if not self.carrito_dulceria:
+            self.escribir_bot("🛒 No seleccionaste ningún producto.")
+        else:
+            self.escribir_bot("🛒 Tu carrito de dulcería:")
+            total = 0
+            for p in self.carrito_dulceria:
+                precio = None
+                if "precio" in p and isinstance(p["precio"], int):
+                    precio = p["precio"]
+                elif "precio" in p and isinstance(p["precio"], dict):
+                    # Tomar el más barato como referencia o podrías preguntar tamaño
+                    precio = min(p["precio"].values())
+                if precio:
+                    self.escribir_bot(f"- {p['nombre']}: ${precio}")
+                    total += precio
+            self.escribir_bot(f"💰 Total a pagar: ${total}")
+        # Resetear carrito
+        self.carrito_dulceria = []
+        self.estado_dulceria = False
         self.mostrar_menu()
 
     def mostrar_promociones(self):
