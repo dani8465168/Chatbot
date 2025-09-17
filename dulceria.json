@@ -1,0 +1,183 @@
+{
+  "dulceria": {
+    "Palomitas": [
+      {
+        "id": 1,
+        "nombre": "Palomitas Mantequilla",
+        "tamaños": ["Chico", "Mediano", "Grande"],
+        "precio": {
+          "Chico": 55,
+          "Mediano": 75,
+          "Grande": 95
+        }
+      },
+      {
+        "id": 2,
+        "nombre": "Palomitas Caramelo",
+        "tamaños": ["Mediano", "Grande"],
+        "precio": {
+          "Mediano": 85,
+          "Grande": 105
+        }
+      },
+      {
+        "id": 3,
+        "nombre": "Palomitas Cheddar",
+        "tamaños": ["Mediano", "Grande"],
+        "precio": {
+          "Mediano": 90,
+          "Grande": 110
+        }
+      },
+      {
+        "id": 4,
+        "nombre": "Palomitas Cinépolis VIP",
+        "precio": 92
+      }
+    ],
+    "Bebidas": [
+      {
+        "id": 5,
+        "nombre": "Refresco (lata 355 ml)",
+        "precio": 35
+      },
+      {
+        "id": 6,
+        "nombre": "Agua Embotellada 1 L",
+        "precio": 35
+      },
+      {
+        "id": 7,
+        "nombre": "Café Americano",
+        "precio": 50
+      },
+      {
+        "id": 8,
+        "nombre": "Icee",
+        "sabores": ["Mora Azul", "Cereza", "Mango", "Limón", "Uva"],
+        "precio": 97
+      }
+    ],
+    "Snacks / Salados": [
+      {
+        "id": 9,
+        "nombre": "Hot Dog Cinépolis",
+        "precio": 99
+      },
+      {
+        "id": 10,
+        "nombre": "Hot Dog Jumbo VIP",
+        "precio": 109
+      },
+      {
+        "id": 11,
+        "nombre": "Nachos Cinépolis con queso cheddar y jalapeños",
+        "precio": 120
+      },
+      {
+        "id": 12,
+        "nombre": "Extra Queso para Nachos",
+        "precio": 25
+      }
+    ],
+    "Baguis / Sandwiches": [
+      {
+        "id": 13,
+        "nombre": "Bagui Premium (res/chicken/hawaiano etc.)",
+        "precio": 166
+      },
+      {
+        "id": 14,
+        "nombre": "Bagui Especial (italiano, milán, pepperoni etc.)",
+        "precio": 154
+      }
+    ],
+    "Crepas": [
+      {
+        "id": 15,
+        "nombre": "Crepas Dulces",
+        "precio": 107
+      },
+      {
+        "id": 16,
+        "nombre": "Crepas Saladas",
+        "precio": 114
+      }
+    ],
+    "Frappés": [
+      {
+        "id": 17,
+        "nombre": "Frappé Clásico (base leche)",
+        "precio": 125
+      },
+      {
+        "id": 18,
+        "nombre": "Frappé Especial",
+        "precio": 131
+      }
+    ],
+    "Dulces": [
+      {
+        "id": 19,
+        "nombre": "Aritos Enchilados",
+        "precio": 85
+      },
+      {
+        "id": 20,
+        "nombre": "Aritos Aciditos",
+        "precio": 85
+      },
+      {
+        "id": 21,
+        "nombre": "Ositos Enchilados",
+        "precio": 85
+      },
+      {
+        "id": 22,
+        "nombre": "M&M's Mega Cacahuate",
+        "precio": 88
+      },
+      {
+        "id": 23,
+        "nombre": "Skittles Pouch",
+        "precio": 88
+      },
+      {
+        "id": 24,
+        "nombre": "Skwinkles Chunks Sandía",
+        "precio": 88
+      },
+      {
+        "id": 25,
+        "nombre": "Chocolate Snickers 48g",
+        "precio": 48
+      }
+    ],
+    "Combos": [
+      {
+        "id": 26,
+        "nombre": "Combo Palomitas Cinépolis & Refresco",
+        "descripcion": "Palomitas + lata de refresco 355 ml",
+        "precio": 196
+      },
+      {
+        "id": 27,
+        "nombre": "Combo Hot Dog",
+        "descripcion": "Palomitas + Refresco + Hot Dog",
+        "precio": 258
+      },
+      {
+        "id": 28,
+        "nombre": "Combo Nachos en Pareja",
+        "descripcion": "Palomitas para llevar + 2 refrescos + Nachos Grandes",
+        "precio": 321
+      },
+      {
+        "id": 29,
+        "nombre": "Combo Hot Dog para Dos",
+        "descripcion": "Palomitas para llevar + 2 refrescos + 2 Hot Dogs + postre",
+        "precio": 493
+      }
+    ]
+  }
+}
