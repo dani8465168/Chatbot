@@ -179,21 +179,20 @@ class CinepolisChatbot(tk.Tk):
     def mostrar_cartelera(self):
         fecha_peliculas = date.today()
         query = f"""
-            SELECT DISTINCT p.titulo
+            SELECT f.id, p.titulo, f.hora, p.duracion
             FROM ent_funciones f
             JOIN cat_peliculas p ON f.pelicula_id = p.id
             WHERE f.fecha = '{fecha_peliculas}'
-            ORDER BY p.id;
+            ORDER BY f.hora, p.titulo;
         """
         self.cursor.execute(query)
-        resultados = self.cursor.fetchall()
-        if resultados:
+        funciones = self.cursor.fetchall()
+        if funciones:
             self.escribir_bot("🎬 Cartelera de hoy:")
-            for (titulo,) in resultados:
-                self.escribir_bot(f"- {titulo}")
+            for (fid, titulo, hora, duracion) in funciones:
+                self.escribir_bot(f"({fid}) {hora} {duracion} min  {titulo}")
         else:
-            self.escribir_bot("No hay funciones para el día de hoy, regresando al menú principal\n")
-        self.mostrar_menu()
+            self.escribir_bot("No hay funciones para el día de hoy.")
 
     def mostrar_dulceria(self):
         if not self.dulceria_data["dulceria"]:
