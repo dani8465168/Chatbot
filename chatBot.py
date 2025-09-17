@@ -191,17 +191,18 @@ class CinepolisChatbot(tk.Tk):
             for r_id in r_ids:
                 try:
                     query = f"""
-                        SELECT f.fecha, f.hora, p.titulo, p.descripcion
+                        SELECT f.fecha, f.hora, p.titulo, p.descripcion, a.fila, a.columna
                         FROM ent_reserva r
                         JOIN ent_funciones f ON f.id = r.funcion_id
                         JOIN cat_peliculas p ON f.pelicula_id = p.id
+                        JOIN cat_asientos a ON a.id = r.asiento_id
                         WHERE r.id = '{r_id}';
                     """
                     print(query)
                     self.cursor.execute(query)
                     response = self.cursor.fetchone()
                     if response:
-                        self.escribir_bot(f"{response[0]} {response[1]} {response[2]}\nDescripción: {response[3]}")
+                        self.escribir_bot(f"{response[0]} {response[1]} {response[2]}\nAsiento: {response[4]}{response[5]}\nDescripción: {response[3]}")
                 except Exception as e:
                     self.escribir_bot(f"El ID {r_id} ingresado no corresponde a una reserva válida: {e}")
         else:
